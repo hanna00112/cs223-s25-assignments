@@ -1,7 +1,7 @@
 /***************************************************
  * Author:Hanna Abrahem 
  * Date: Jan 25th, 2025
- * Description: maintains a list of snakcs available for purchase 
+ * Description: maintains a list of snacks available for purchase 
  */
 #include <stdio.h>
 
