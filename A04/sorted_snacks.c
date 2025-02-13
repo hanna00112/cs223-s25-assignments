@@ -6,11 +6,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Node struct */
+/* Node struct -- each snack */
 struct node {
 	int val;
 	struct node* next;
 };
+/*Insert_first -- create new snack & insert in begnning of the list */
+void insert_front(int val, struct node* head) {
+	struct node* n = malloc(sizeof(struct node));
+	if (n == NULL) {
+		printf("ERROR: out of space! \n");
+		exit(1);
+	}
+	n->val = val;
+	n->next = head;
+	head = n;
+
+}
+
+/*clear -- clear all items in the list */
+void clear(struct node** head) {
+	struct node* current = *head;
+	struct node* next_node;
+
+	while (current != NULL) {
+		next_node = current->next;
+		free(current);
+		current = next_node;
+	}
+	*head_ref = NULL;
+
+}
+
+/*printList -- should print contents in the list */
+void printList(struct node* head) {
+	struct node* temp = head;
+	while (temp != NULL) {
+		print("%d", temp->data);
+		temp = temp->next;
+	}
+	print("\n");
+
+}
 
 int main() {
 	 /* Variable declaration*/
