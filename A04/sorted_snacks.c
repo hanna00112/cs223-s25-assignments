@@ -5,22 +5,26 @@
  ---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <string.h>
 /* Node struct -- each snack */
 struct node {
-	int val;
+	char name[30];
+	int quantity;
+	float cost;
 	struct node* next;
 };
 /*Insert_first -- create new snack & insert in begnning of the list */
-void insert_front(int val, struct node* head) {
-	struct node* n = malloc(sizeof(struct node));
-	if (n == NULL) {
+void insert_front(struct node** head, char* name, float cost, int quantity) {
+	struct node* new_node = malloc(sizeof(struct node));
+	if (new_node == NULL) {
 		printf("ERROR: out of space! \n");
 		exit(1);
 	}
-	n->val = val;
-	n->next = head;
-	head = n;
+	strcpy(new_node->name, name);
+	new_node->cost = cost;
+	new_node->quantity = quantity;
+	//new_node->next = head;
+	*head = new_node; // updating the header pointer 
 
 }
 
@@ -34,38 +38,53 @@ void clear(struct node** head) {
 		free(current);
 		current = next_node;
 	}
-	*head_ref = NULL;
+	*head = NULL; //head is set to NULL after clearing
 
 }
 
-/*printList -- should print contents in the list */
+/*printList -- should print contents in the list 
+ * node is a single pointer because not modifying the lists*/
 void printList(struct node* head) {
 	struct node* temp = head;
 	while (temp != NULL) {
-		print("%d", temp->data);
+		printf("%s, cost: %.2f, quantity: %d", temp->name, temp->cost, temp->quantity);
 		temp = temp->next;
 	}
-	print("\n");
+	printf("\n");
 
 }
 
 int main() {
 	 /* Variable declaration*/
 	 int num_snacks;
+	 struct node* head = NULL;
 
 	 /* Welcoming message*/
 	 printf("Welcome to Hanna's snackbar. How many snacks would you like to input?:");
 	 scanf("%d", &num_snacks);
 
-	/* Allocating the memory based on how many snacks user inputs */
-	 struct node* n = malloc(sizeof(struct node));
-	 if (n == NULL) {
-		 printf("ERROR: out of space!\n");
-		 exit(1);
+	/* Users inputting their snacks */
+	 for (int i=0; i < num_snacks; i++) {
+		 char name[30];
+		 float cost;
+		 int quantity;
+
+ 		 printf("Enter snack name: \n");
+		 scanf("%s", name);
+
+		 printf("Enter snack cost: \n");
+		 scanf("%f", &cost);
+
+		 printf("Enter snack quantity: \n");
+		 scanf("%d", &quantity);
+
+		 insert_front(&head, name, cost, quantity);
 	 }
 
-
-
-
+	 /*Printing the list of snacks */
+	  for (int i=0; i < num_snacks; i++) {
+		printList(head);
+	  }
+	
  	 return 0;
 }
