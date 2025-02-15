@@ -51,8 +51,100 @@ void printList(struct node* head) {
 		temp = temp->next;
 	}
 	printf("\n");
+}/*Swapping 2 nodes, used for sorted based on cost, quantity and name */
+void swap(struct node *a, struct node *b) {
+	
+	char temp_name[30];
+	float temp_cost;
+	int temp_quantity;
+
+	//swap name
+	strcpy(temp_name, a->name);
+	strcpy(a->name, b->name);
+	strcpy(b->name, temp_name);
+
+	//swap cost
+	temp_cost = a->cost;
+	a->cost = b->cost;
+	b->cost = temp_cost;
+
+	//swap quantity
+	temp_quantity = a->quantity;
+	a->quantity = b->quantity;
+	b->quantity = temp_quantity;
 }
 
+/*sorting linked list based on least expensive to most expensive cost */
+void sortCost(struct node *start) {
+    int swapped;  
+    struct node *ptr1;  
+    struct node *lptr = NULL;  
+  
+    if (start == NULL) // if linked list is empty 
+        return;  
+  
+    do {  
+        swapped = 0;  // reseting swapped at start of each pass
+        ptr1 = start;  
+  
+        while (ptr1->next != lptr)  
+        {  
+            if (ptr1->cost > ptr1->next->cost)  
+            {  
+                swap(ptr1, ptr1->next);  // Call swap function
+                swapped = 1; //set swapped to 1 (true), meaning we need another pass
+            }  
+            ptr1 = ptr1->next;  // moving to next pair 
+        }  
+        lptr = ptr1;  
+    } while (swapped);  
+}
+
+void sortName(struct node *start) {
+	int swapped;
+	struct node *ptr1; // current node 
+	struct node *lptr = NULL; // last pointer 
+
+	if (start == NULL) // if linked list is empty
+		return;
+	do {
+		swapped = 0;
+		ptr1 = start;
+
+		while (ptr1->next != lptr) { 
+			// strcmp = compares 2 strings in lexicgraphical order 
+			if (strcmp(ptr1->name, ptr1->next->name) > 0) {
+				swap(ptr1, ptr1->next);
+				swapped = 1;
+			}
+			ptr1 = ptr1->next;
+		}
+		lptr = ptr1;
+	} while (swapped);
+
+}
+void sortQuantity(struct node *start) {
+	int swapped;
+	struct node *ptr1;
+	struct node *lptr = NULL;
+
+	if (start == NULL) 
+		return;
+
+	do {
+		swapped = 0;
+		ptr1 = start;
+
+		while (ptr1->next != NULL && ptr1->next != lptr) {
+			if (ptr1->quantity > ptr1->next->quantity) {
+				swap(ptr1, ptr1->next);
+				swapped = 1;
+			}
+			ptr1 = ptr1->next; //moving to next pair
+		}
+		lptr = ptr1;
+	} while (swapped);
+}
 
 
 int main() {
@@ -81,7 +173,7 @@ int main() {
 
 		 insert_front(&head, name, cost, quantity);
 	 }
-
+		sortQuantity(head); 
 		printList(head);
 	
  	 return 0;
