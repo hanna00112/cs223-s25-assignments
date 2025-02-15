@@ -23,7 +23,7 @@ void insert_front(struct node** head, char* name, float cost, int quantity) {
 	strcpy(new_node->name, name);
 	new_node->cost = cost;
 	new_node->quantity = quantity;
-	//new_node->next = head;
+	new_node->next = *head;
 	*head = new_node; // updating the header pointer 
 
 }
@@ -47,12 +47,13 @@ void clear(struct node** head) {
 void printList(struct node* head) {
 	struct node* temp = head;
 	while (temp != NULL) {
-		printf("%s, cost: %.2f, quantity: %d", temp->name, temp->cost, temp->quantity);
+		printf("%s, cost: %.2f, quantity: %d \n", temp->name, temp->cost, temp->quantity);
 		temp = temp->next;
 	}
 	printf("\n");
-
 }
+
+
 
 int main() {
 	 /* Variable declaration*/
@@ -81,10 +82,7 @@ int main() {
 		 insert_front(&head, name, cost, quantity);
 	 }
 
-	 /*Printing the list of snacks */
-	  for (int i=0; i < num_snacks; i++) {
 		printList(head);
-	  }
 	
  	 return 0;
 }
