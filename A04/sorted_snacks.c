@@ -136,7 +136,7 @@ void sortQuantity(struct node *start) {
 		ptr1 = start;
 
 		while (ptr1->next != NULL && ptr1->next != lptr) {
-			if (ptr1->quantity > ptr1->next->quantity) {
+			if (ptr1->next != lptr && ptr1->quantity > ptr1->next->quantity) {
 				swap(ptr1, ptr1->next);
 				swapped = 1;
 			}
@@ -173,7 +173,7 @@ int main() {
 
 		 insert_front(&head, name, cost, quantity);
 	 }
-		sortQuantity(head); 
+		sortName(head); 
 		printList(head);
 	
  	 return 0;
