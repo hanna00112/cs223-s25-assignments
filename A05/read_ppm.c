@@ -11,13 +11,16 @@
 // Choose *one* to implement (do not remove the other one!)
 
 /*return flat array */
-struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
-  return NULL;
-}
+//struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
+//  return NULL;
+//}
+//struct ppm_pixel {
+//    unsigned char r, g, b; // Red, Green, Blue values
+//};
 
 /*return an array or arrays */
 struct ppm_pixel** read_ppm_2d(const char* filename, int* w, int* h) {
-	FILE* ppmData = openfile(filename, "rb"); //opening file in binary mode
+	FILE* ppmData = fopen(filename, "rb"); //opening file in binary mode
 
 	if (ppmData == NULL) {
 		perror("Error opening file");
@@ -28,11 +31,12 @@ char buff[1000];
 int index = 0;
 while (fgets(buff, 100, ppmData)) {
 	if(index == 2) { // 3 line of file is contains width and height
-		sscanf(buff, "%d %d", &w, &h);
+		sscanf(buff, "%d %d", w, h); 
 	} if(index == 3) { // the rest of the header is unnecessarily 
 		break;
-		index++;
 	}
+	index++;
+
 
 }
 
@@ -40,7 +44,7 @@ binary = malloc(sizeof(struct ppm_pixel*)* *h);
 
 //alocates memory for each row in 2D array
 for (int i = 0; i < *h; i++) {
-	binary[i] = malloc(sizeof(struct ppm_pixel*) *w);
+	binary[i] = malloc(sizeof(struct ppm_pixel) * *w);
 	if (binary[i] == NULL) {
 		perror("Error allocating memory");
 		return NULL;
