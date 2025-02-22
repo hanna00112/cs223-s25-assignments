@@ -10,13 +10,9 @@
 
 // Choose *one* to implement (do not remove the other one!)
 
-/*return flat array */
-//struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
-//  return NULL;
-//}
-//struct ppm_pixel {
-//    unsigned char r, g, b; // Red, Green, Blue values
-//};
+struct ppm_pixel* read_ppm(const char* filename, int* w, int* h) {
+  return NULL;
+}
 
 /*return an array or arrays */
 struct ppm_pixel** read_ppm_2d(const char* filename, int* w, int* h) {
