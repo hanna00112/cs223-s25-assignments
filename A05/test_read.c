@@ -1,7 +1,7 @@
 /*----------------------------------------------
- * Author: 
- * Date: 
- * Description
+ * Author: Hanna Abrahem 
+ * Date: feb 22nd, 2022
+ * Description: read and prints the values of a binary file
  ---------------------------------------------*/
 #include <stdio.h>
 #include <stdlib.h>

@@ -12,7 +12,7 @@
 
 int main(int argc, char** argv) {
   int w, h;
-  struct ppm_pixel* pixels = read_ppm("feep-raw.ppm", &w, &h);
+  struct ppm_pixel** pixels = read_ppm_2d("feep-raw.ppm", &w, &h);
 
   printf("Testing file feep-raw.ppm: %d %d ", w, h);
 
@@ -20,12 +20,12 @@ int main(int argc, char** argv) {
   write_ppm_2d("test.ppm", pixels, w, h);
 
   // reading new file 
-  struct pp_pixel* testPixels = read_ppm_2d("test.ppm", &w, &h);
+  struct ppm_pixel** testPixels = read_ppm_2d("test.ppm", &w, &h);
 
   //printing pixel values to compare original vs. written
   for (int i=0; i < h; i++) {
 	  for (int j=0; j < w; j++) {
-		  printf("%d %d %d", testPixels[i][j].r, testPixels[i][j].g, testPixels[i][j].b);
+		  printf("(%d, %d, %d)", testPixels[i][j].red, testPixels[i][j].green, testPixels[i][j].blue);
 	  }
 	  printf("\n");
   }
@@ -38,6 +38,6 @@ int main(int argc, char** argv) {
 
   // test writing the file to test.ppm, reload it, and print the contents
   free(pixels);
-  free(textPixels);
+  free(testPixels);
   return 0;
 }
