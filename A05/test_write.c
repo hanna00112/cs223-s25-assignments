@@ -22,7 +22,6 @@ int main(int argc, char** argv) {
   // reading new file 
   struct ppm_pixel** testPixels = read_ppm_2d("test.ppm", &w, &h);
 
-  //printing pixel values to compare original vs. written
   for (int i=0; i < h; i++) {
 	  for (int j=0; j < w; j++) {
 		  printf("(%d, %d, %d)", testPixels[i][j].red, testPixels[i][j].green, testPixels[i][j].blue);
