@@ -59,13 +59,13 @@ int main(int argc, char* argv[]) {
 
 	//Converting image to Ascii
 	for (int i=0; i < h; i++) {
-		for (int j=0; i < w; j++) {
+		for (int j=0; j < w; j++) {
 			struct ppm_pixel pixel = pixels[i][j];
 			int intensity = (pixel.red + pixel.blue + pixel.green) / 3;
 			printf("%c", ascii_intensity(intensity));
 
-	//	printf("Pixel (%d, %d) - RGB(%d, %d, %d), Intensity: %d, Char: %c\n",
-   // i, j, pixel.red, pixel.green, pixel.blue, intensity, ascii_intensity(intensity));
+		printf("Pixel (%d, %d) - RGB(%d, %d, %d), Intensity: %d, Char: %c\n",
+    i, j, pixel.red, pixel.green, pixel.blue, intensity, ascii_intensity(intensity));
 
 		}
 		printf("\n");
