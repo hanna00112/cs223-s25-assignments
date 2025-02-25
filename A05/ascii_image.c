@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 	/* User message */
-	printf("Reading %s with the width %d and height %d", argv[1], w, h);
+	printf("Reading %s with the width %d and height % d \n", argv[1], w, h);
 
 	//Converting image to Ascii
 	for (int i=0; i < h; i++) {
@@ -64,8 +64,8 @@ int main(int argc, char* argv[]) {
 			int intensity = (pixel.red + pixel.blue + pixel.green) / 3;
 			printf("%c", ascii_intensity(intensity));
 
-		printf("Pixel (%d, %d) - RGB(%d, %d, %d), Intensity: %d, Char: %c\n",
-    i, j, pixel.red, pixel.green, pixel.blue, intensity, ascii_intensity(intensity));
+//		printf("Pixel (%d, %d) - RGB(%d, %d, %d), Intensity: %d, Char: %c\n",
+//    i, j, pixel.red, pixel.green, pixel.blue, intensity, ascii_intensity(intensity));
 
 		}
 		printf("\n");

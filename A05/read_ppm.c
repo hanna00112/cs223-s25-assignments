@@ -28,7 +28,7 @@ int index = 0;
 while (fgets(buff, 100, ppmData)) {  
 	if(index == 2) { // 3 line of file is contains width and height
 		sscanf(buff, "%d %d",w,h);
-	printf("Debug: Width = %d, Height = %d\n", *w, *h);
+//	printf(" Width = %d, Height = %d\n", *w, *h);
 	} if(index == 3) { // the rest of the header is unnecessary 	
 		break;
 	}
