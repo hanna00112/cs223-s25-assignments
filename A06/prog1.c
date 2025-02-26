@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
         printf("strange error\n");
         exit(1);
     }
-    printf("max value in the array is %d\n", max);
+	printf("max value in the array is %d\n", max);
 
     return 0;
 }
