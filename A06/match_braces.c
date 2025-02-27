@@ -47,6 +47,7 @@ void clear_stack(struct node** top) {
 	while (current != NULL) {
 		next_node = current->next;
 		free(current);
+		current = next_node;
 
 	}
 	*top = NULL;
@@ -76,19 +77,19 @@ int main(int argc, char* argv[])
 		else if (ch == '{') {
 		push(&stack, '{', line, column); 
 		}
-		else if (ch == '{') {
+		else if (ch == '}') {
 		struct node* matched = pop(&stack);
 		if (matched == NULL) {
-		printf("Unmatched brace on line %d and column %d", line, column);
+		printf("Unmatched brace on line %d and column %d \n", line, column);
 		} else {
-		printf("Matching braces found: (%d,%d) -> (%d,%d)",matched->line, matched->column, line, column);
+		printf("Matching braces found: (%d,%d) -> (%d,%d) \n",matched->line, matched->column, line, column);
 		free(matched);
 		}
 		}
 		}
 	
   fclose(file);
-//  clear_stack(&stack);
+  clear_stack(&stack);
   return 0;
 }
 
