@@ -37,6 +37,7 @@ struct node* pop(struct node** top) {
 	}
 	struct node* temp = *top; //saving top pointer 
 	*top = (*top)->next; //moving top pointer to next pointer
+	temp->next = NULL;
 	return temp; 
 
 }
@@ -56,10 +57,15 @@ void clear_stack(struct node** top) {
 
 int main(int argc, char* argv[])
 {
+	if (argc < 2) {
+		fprintf(stderr,"Usage %s <filename)", argv[0]);
+		return 1;
+	}
 	//opening file 
 	FILE* file = fopen(argv[1], "r");
-	if (argv[1] == NULL) {
+	if (file == NULL) {
 		printf("Error: unable to read file");
+		return 1;
 	}
 
 	struct node* stack = NULL;
