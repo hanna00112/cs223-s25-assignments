@@ -33,9 +33,19 @@ struct tree_node* insert(const char* name, struct tree_node* root)
 		if (root == NULL) {
 			fprintf(stderr, "Out of space!\n");
 			exit(1);
-	};
-
 	}
+		strcpy(root->data.name, name);
+		root->left = root->right = NULL;
+	}	
+	else if (strcmp(name, root->data.name < 0)) {
+			root->left = insert(name, root->left);
+		} 
+	} else if (strcmp(name, root->data.name > 0)) {
+			root->right = insert(name, root->right);
+		}
+	}
+	}
+	return root;
 
   return NULL;
 }
