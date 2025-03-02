@@ -59,9 +59,29 @@ void clear(struct tree_node* root)
 
 void print(struct tree_node* root)
 {
+	if (root == NULL) {
+		return;
+	}
+	printf("%s\n", root->data.name);  // Print current node
+	if (root->left) {
+		printf(" l:%s\n", root->left->data.name);
+		//print(root->left);
+	}
+	if (root->right) {
+		printf("  r:%s\n", root->right->data.name);
+		//print(root->right);
+	}
+	print(root->left);
+	print(root->right);
 }
 
 void printSorted(struct tree_node* root)
 {
+	if (root == NULL) {
+		return;
+	}
+	printSorted(root->left);
+	printf("%s\n", root->data.name);
+	printSorted(root->right);
 }
 
