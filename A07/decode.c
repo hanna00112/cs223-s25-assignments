@@ -15,16 +15,12 @@ int main(int argc, char** argv) {
   int width, height;
   struct ppm_pixel** pixels = read_ppm_2d(argv[1],&width,&height);
 
-
-//  int max_char = (width * height * 3) / 8;
-//  printf("Reading %s with a width: %d and height: %d \n", argv[1], width, height);
-//  printf("Max characters in images: %d \n", max_char);
-
   //if could not read pixels 
   if (!pixels) {
 	  fprintf(stderr, "Error unable to read pixels from file %s \n", argv[1]);
 	  return 1;
   }
+
   // 3 colors, and 8 bits per character 
   int max_char = (width * height * 3) / 8;
   printf("Reading %s with a width: %d and height: %d \n", argv[1], width, height);
@@ -44,28 +40,28 @@ int main(int argc, char** argv) {
  int bit_count = 0; //counter for 8 bits 
 
  //Each byte -- convert to character 
- for (int i=0; i < width; i++) {
-	 for (int j = 0; j < height; j++) {
-		 unsigned char colors[3] = {pixel.red, pixel.green, pixel.blue};
+ for (int i=0; i < (width * height * 3); i++) {
+	 int least_sig_bit = pixel_data[i] & 1;
+	 character = (character << 1)| least_sig_bit;
+	 printf("Bit extracted: %d from pixel_data[%d] = %02X\n", least_sig_bit, i, pixel_data[i]);
 
-		 for (int k=0; k < 3; k++) {
-			  //taking least significant bit
-		         character = (character << 1) | (pixel_data[i] & 1); //going through each bit
-        		 //printf("%c", character);
-        		 bit_count++;
-
-			 //once we have 8 bits, convert to character
-	         if (bit_count == 8) {
-                 if (character == '\0') {
-                         break;
-                 }
-                 printf("%c", character);
-                 bit_count = 0; //reseting for next byte
-                 character = 0;
-
-         }
+	 bit_count += 1;
+	 if (bit_count == 8) {
+		 if (character == '\0') {
+			 printf("NULL character reached");
+			 break;
 		 }
+	//	 printf("bit counter: %d", bit_count);
+		 printf("%c", character);
+		 bit_count = 0;
+		 character = 0;
 	 }
+	 //if (character == '\0') {
+	 //	 break;
+	 //}
+	 //printf("\n");
+
+
  }
 
  printf("\n");
