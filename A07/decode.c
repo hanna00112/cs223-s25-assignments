@@ -30,10 +30,10 @@ int main(int argc, char** argv) {
  unsigned char* pixel_data = (unsigned char*) pixels; 
 
 
-   printf("First few pixel values:\n");
-   for (int i = 0; i < 10; i++) {  // Print first 10 bytes for debugging
-    printf("%02X ", pixel_data[i]);
-}
+//   printf("First few pixel values:\n");
+//   for (int i = 0; i < 10; i++) {  // Print first 10 bytes for debugging
+//    printf("%02X ", pixel_data[i]);
+//}
 
  //variables for the loop
  unsigned char character = 0; //saving new character 
@@ -43,7 +43,7 @@ int main(int argc, char** argv) {
  for (int i=0; i < (width * height * 3); i++) {
 	 int least_sig_bit = pixel_data[i] & 1;
 	 character = (character << 1)| least_sig_bit;
-	 printf("Bit extracted: %d from pixel_data[%d] = %02X\n", least_sig_bit, i, pixel_data[i]);
+//	 printf("Bit extracted: %d from pixel_data[%d] = %02X\n", least_sig_bit, i, pixel_data[i]);
 
 	 bit_count += 1;
 	 if (bit_count == 8) {
@@ -56,10 +56,6 @@ int main(int argc, char** argv) {
 		 bit_count = 0;
 		 character = 0;
 	 }
-	 //if (character == '\0') {
-	 //	 break;
-	 //}
-	 //printf("\n");
 
 
  }
