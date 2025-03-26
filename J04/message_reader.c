@@ -21,13 +21,13 @@ int main(int argc, char *argv[])
         }
         //reading comment line
         char comment[256];
-        if (fgets(comment, 256, data) != 1) {
+        if (fgets(comment, 256, data) != NULL) {
                 fprintf(stderr, "Error reading comment \n");
         }
 
         //read meta data
         struct meta_data meta;
-        if(fread(&meta, sizeof(struct meta_data), data) == NULL) {
+        if(fread(&meta, sizeof(struct meta_data),1, data) != 1) {
                 fprintf(stderr, "Error reading data");
 
         }
@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
                 return 1;
         }
         //reading message data
-        if (fread(message, 1, meta.length + 1) != meta.length + 1) {
+        if (fread(message, 1, meta.length, data) != meta.length) {
                 fprintf(stderr, "Error reading message\n");
                 free(message);
                 fclose(data);
