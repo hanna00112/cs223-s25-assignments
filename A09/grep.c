@@ -56,7 +56,7 @@ int main(int argc, char** argv) {
 		if (pids[i] == 0) {
 			int matches = 0;
 			printf("Process [%d] searching %d files\n", getpid(), count);
-		}
+		
 		for (int j = 0; j < count; j++) {
 			char* filename = files[files_index++];
 			FILE* file = fopen(filename, "r");
@@ -74,8 +74,16 @@ int main(int argc, char** argv) {
 		}
 		exit(matches);
 	}
+	}
 
-
+	int total_matches = 0;
+	for (int i = 0; i < num_processes; i++){
+		int status;
+		waitpid(pid[i], &status, 0); // waiting for each child 
+		if (WIDEXITED(status)){
+			total_matches += WEXITSTATUS(status);
+		}
+	}
 
 
 
