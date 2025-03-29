@@ -27,7 +27,7 @@
  * arg3 = files  */
 /*N child that searches subset of files, each will open files */
 int main(int argc, char** argv) {
-	if (argv < 4) {
+	if (argc < 4) {
 		printf("Usage: %s <NumProcesses> <Keyword> <Files>\n", argv[0]);
 		return 0;
 	}
@@ -46,11 +46,16 @@ int main(int argc, char** argv) {
 
 	struct timeval start, end;
 	gettimeofday(&start, NULL); //start timing
-
-	pid_t pids[num_processes];
+	
+	pid_t* pids = malloc(num_processes * sizeof(pid_t));  // Allocate memory dynamically
+	if (!pids) {
+    		perror("Memory allocation failed");
+    		return 1;
+		}
+	pid_t* pids[num_processes];
 
 	for (int i = 0; i < num_processes; i++) {
-		int count = files_per_proc + (i < extra_files ? 1 : 0); //distributing extra files
+		int count = files_per_process+ (i < extra_files ? 1 : 0); //distributing extra files
 		pids[i] = fork();
 
 		if (pids[i] == 0) {
@@ -58,7 +63,7 @@ int main(int argc, char** argv) {
 			printf("Process [%d] searching %d files\n", getpid(), count);
 		
 		for (int j = 0; j < count; j++) {
-			char* filename = files[files_index++];
+			char* filename = files[file_index++];
 			FILE* file = fopen(filename, "r");
 			if (!file){
 				printf(ANSI_COLOR_RED "Process [%d] Error: Cannot open file %s\n" ANSI_COLOR_RESET, getpid(), filename); //used to make file color red
@@ -79,11 +84,17 @@ int main(int argc, char** argv) {
 	int total_matches = 0;
 	for (int i = 0; i < num_processes; i++){
 		int status;
-		waitpid(pid[i], &status, 0); // waiting for each child 
-		if (WIDEXITED(status)){
+		waitpid(pids[i], &status, 0); // waiting for each child 
+		if (WIFEXITED(status)){
 			total_matches += WEXITSTATUS(status);
 		}
 	}
+	gettimeofday(&end, NULL); // end timing
+	double elapsed = (end.tv_sec - start.tv_sec) + (end.tv_sec - start.tv_usec) / 1e6;
+
+	printf("Total occurrences: %d\n", total_matches);
+        printf("Elapsed time: %.6f seconds\n", elapsed);
+	free(pids);
 
 
 
