@@ -52,7 +52,7 @@ int main(int argc, char** argv) {
     		perror("Memory allocation failed");
     		return 1;
 		}
-	pid_t* pids[num_processes];
+//	pid_t* pids[num_processes];
 
 	for (int i = 0; i < num_processes; i++) {
 		int count = files_per_process+ (i < extra_files ? 1 : 0); //distributing extra files
@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
 			char* filename = files[file_index++];
 			FILE* file = fopen(filename, "r");
 			if (!file){
-				printf(ANSI_COLOR_RED "Process [%d] Error: Cannot open file %s\n" ANSI_COLOR_RESET, getpid(), filename); //used to make file color red
+				printf("Process [%d] Error: Cannot open file %s\n", getpid(), filename); //used to make file color red
 			}
 			char line[1024];
 			while (fgets(line, sizeof(line), file)) {
