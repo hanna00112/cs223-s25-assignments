@@ -10,7 +10,6 @@
 #include <time.h>
 #include <pthread.h>
 #include "read_ppm.h"
-#include "write_ppm.h"
 
 int main(int argc, char* argv[]) {
     /**hardcoding the file **/
@@ -25,7 +24,7 @@ int main(int argc, char* argv[]) {
     }
     /**reading ppm file **/
     int width, height;
-    struct ppm_pixel** pixels = read_ppm_2d(file,&width,&height);
+    struct ppm_pixel** pixels = read_ppm_2d(filename,&width,&height);
 
     //if could not read pixels
      if (!pixels) {
@@ -56,27 +55,55 @@ int main(int argc, char* argv[]) {
 		     if (brightness > threshold) {
 			     bright_pixels[h][w] = px; //keeping the bright pixels
 		     } else {
-			     // setting none bright pixels to black
+			     // setting non-bright pixels to black
 			     bright_pixels[h][w].red = 0;
 			     bright_pixels[h][w].blue = 0;
 			     bright_pixels[h][w].green = 0;
 		     }
-		/***Blur box to each pixel ***/
+	     }
+     }
+
+
+	/***Blur box to each pixel ***/
+	 for (int h = 0; h < height; h++) {
+             for (int w = 0; w < width; w++) {
+
 		     int count = 0;
-		     int sum_red = 0, int sum_green = 0, int sum_blue = 0;
+		     int red_sum = 0;
+	             int green_sum = 0;
+		     int blue_sum = 0;
 
 
 		     for (int j = -radius; j < radius; j++) {
 			     for (int k = -radius; k < radius; k++) {
 				     int new_height = h + j;
 			             int new_width = w + k;
+
+				     //checking the bounds 
+				     if (new_height >= 0 && new_height < height && new_width >= 0 && new_width < width) {
+					     red_sum += bright_pixels[new_height][new_width].red;
+					     green_sum += bright_pixels[new_height][new_width].green;
+					     blue_sum += bright_pixels[new_height][new_width].blue;
+					     count++;
+				     }
 			     }
 		     }
-
+		     blurred_pixels[h][w].red = red_sum/count;
+		     blurred_pixels[h][w].green = green_sum/count;
+		     blurred_pixels[h][w].blue = blue_sum/count;
 	     }
+	 }
 
+
+	 /**Glow -- adding blurred image to original image **/
+	 for (int h = 0; h < height; h++) {
+             for (int w = 0; w < width; w++) {
+		     if (bright_pixels[h][w].red != 0 || bright_pixels[h][w].green != 0 || bright_pixels[h][w].blue != 0) { //all pixels that are not currently black
+		     pixels[h][w].red = pixels[h][w].red + blurred_pixels[h][w].red;
+		     pixels[h][w].green = pixels[h][w].green + blurred_pixels[h][w].green;
+		     pixels[h][w].blue = pixels[h][w].blue + blurred_pixels[h][w].blue;
+	     }
+	 }
+	 }
+	 return 0;
      }
-
-
-
-}
