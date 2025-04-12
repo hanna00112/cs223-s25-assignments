@@ -21,12 +21,12 @@ typedef struct {
 	int blur_size;
 	int start_row;
 	int end_row;
-	struct ppm_pixels** input_pixels;
-	struct ppm_pixels** bright_pixels;
-	struct ppm_pixels** blurred_pixels;
+	struct ppm_pixel** input_pixels;
+	struct ppm_pixel** bright_pixels;
+	struct ppm_pixel** blurred_pixels;
 } threadargs;
 
-void* brighting_blurring_image(void arg*) {
+void* brighting_blurring_image(void* arg) {
 	threadargs* args = (threadargs*)arg;
 
 	for (int h = args->start_row; h < args->end_row; h++) {
@@ -54,7 +54,7 @@ void* brighting_blurring_image(void arg*) {
 			             int new_width = w + k;
 
 				     //checking the bounds
-				     if (new_height >= 0 && new_height < height && new_width >= 0 && new_width < width) {
+				     if (new_height >= 0 && new_height < args->height && new_width >= 0 && new_width < args->width) {
 					     red_sum += args->bright_pixels[new_height][new_width].red;
 					     green_sum += args->bright_pixels[new_height][new_width].green;
 					     blue_sum += args->bright_pixels[new_height][new_width].blue;
@@ -73,6 +73,7 @@ void* brighting_blurring_image(void arg*) {
 	     }
 	     }
 	}
+	return NULL;
 }
 
 int main(int argc, char* argv[]) 
@@ -107,14 +108,14 @@ int main(int argc, char* argv[])
      //allocating space for the new image
      struct ppm_pixel** bright_pixels = malloc(height * sizeof(struct ppm_pixel*));
      for (int i = 0; i < height; i++){
-	     bright_pixels[i] = malloc(width * sizeof(struct ppm_pixel*));
+	     bright_pixels[i] = malloc(width * sizeof(struct ppm_pixel));
      }
      struct ppm_pixel** blurred_pixels = malloc(height * sizeof(struct ppm_pixel*));
      for (int i = 0; i < height; i++){
-             blurred_pixels[i] = malloc(width * sizeof(struct ppm_pixel*));
+             blurred_pixels[i] = malloc(width * sizeof(struct ppm_pixel));
      }
      pthread_t* threads = malloc(sizeof(pthread_t) * N);
-     threadargs* args = malloc(sizeof(thread_data ) * N) ;
+     threadargs* args = malloc(sizeof(threadargs ) * N) ;
      int rows_per_thread = height / N;
      for (int i = 0; i < N; i++) {
 	     args[i].thread_id = i;
@@ -125,7 +126,7 @@ int main(int argc, char* argv[])
 	     args[i].height = height;
 	     args[i].threshold = threshold;
 	     args[i].blur_size = blursize;
-	     args[i].input_pixels = ppm_pixels;
+	     args[i].input_pixels = pixels;
 	     args[i].bright_pixels = bright_pixels;
 	     args[i].blurred_pixels = blurred_pixels;
 
