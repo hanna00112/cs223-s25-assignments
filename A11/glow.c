@@ -10,6 +10,8 @@
 #include <time.h>
 #include <pthread.h>
 #include "read_ppm.h"
+#include <sys/time.h> //for timing
+#include <stdio.h>  //for timing
 
 int main(int argc, char* argv[]) {
     /**hardcoding the file **/
@@ -45,6 +47,9 @@ int main(int argc, char* argv[]) {
      for (int i = 0; i < height; i++){
              blurred_pixels[i] = malloc(width * sizeof(struct ppm_pixel*));
      }
+     /**for timing **/
+     struct timeval start, end;
+     gettimeofday(&start, NULL);
 
      //looping through every pixel 
      for (int h = 0; h < height; h++) {
@@ -105,6 +110,10 @@ int main(int argc, char* argv[]) {
 	     }
 	 }
 	 }
+
+	 gettimeofday(&end, NULL);
+	 double elapsed = (end.tv_sec - start.tv_sec) +((end.tv_usec - start.tv_usec) / 1000000.0);
+	 printf("Elapsed time: %.6f seconds\n", elapsed);
 	  for (int i = 0; i < height; i++){
            free(bright_pixels[i]);
            free(blurred_pixels[i]);

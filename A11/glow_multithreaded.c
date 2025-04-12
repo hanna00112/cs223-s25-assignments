@@ -11,6 +11,8 @@
 #include <pthread.h>
 #include "read_ppm.h"
 #include "write_ppm.h"
+#include <sys/time.h> //for timing
+#include <stdio.h> //for timing
 
 typedef struct {
 	int thread_id;
@@ -114,6 +116,12 @@ int main(int argc, char* argv[])
      for (int i = 0; i < height; i++){
              blurred_pixels[i] = malloc(width * sizeof(struct ppm_pixel));
      }
+
+     /**for timing **/
+     struct timeval start, end;
+     gettimeofday(&start, NULL);
+    // brighting_blurring_image()
+     
      pthread_t* threads = malloc(sizeof(pthread_t) * N);
      threadargs* args = malloc(sizeof(threadargs ) * N) ;
      int rows_per_thread = height / N;
@@ -136,7 +144,11 @@ int main(int argc, char* argv[])
      for (int i = 0; i < N; i++) {
     pthread_join(threads[i], NULL);
 }
-   write_ppm_2d("glow.ppm", pixels, width, height);
+    gettimeofday(&end, NULL);
+    double elapsed = (end.tv_sec - start.tv_sec) + ((end.tv_usec - start.tv_usec) / 1000000.0);
+    printf("Elapsed time: %.6f seconds\n", elapsed);
+
+    write_ppm_2d("glow.ppm", pixels, width, height);
    
    for (int i = 0; i < height; i++){
 	   free(bright_pixels[i]);
