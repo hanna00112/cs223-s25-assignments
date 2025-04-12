@@ -21,7 +21,7 @@ void write_ppm_2d(const char* filename, struct ppm_pixel** pxs, int w, int h) {
 
 	for(int i = 0; i < w; i++){
   	 for(int j = 0; j < h; j++){
-   		 fwrite(&pixels[i][j], sizeof(struct ppm_pixel), 1, ppmfile);
+   		// fwrite(&pixels[i][j], sizeof(struct ppm_pixel), 1, ppmfile);
   	 }
   }
 
