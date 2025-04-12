@@ -137,6 +137,14 @@ int main(int argc, char* argv[])
     pthread_join(threads[i], NULL);
 }
    write_ppm_2d("glow.ppm", pixels, width, height);
+   
+   for (int i = 0; i < height; i++){
+	   free(bright_pixels[i]);
+	   free(blurred_pixels[i]);
+   }
+
+free(threads);
+free(args);
 
 
 }

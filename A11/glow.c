@@ -14,7 +14,7 @@
 int main(int argc, char* argv[]) {
     /**hardcoding the file **/
     FILE *file;
-    char *filename = "earth-small.ppm"; // Replace with your file name
+    char *filename = "earth-small.ppm";
     
     file = fopen(filename, "r"); // "r" for read mode
 
@@ -105,5 +105,10 @@ int main(int argc, char* argv[]) {
 	     }
 	 }
 	 }
+	  for (int i = 0; i < height; i++){
+           free(bright_pixels[i]);
+           free(blurred_pixels[i]);
+   }
+
 	 return 0;
      }
