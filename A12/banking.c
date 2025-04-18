@@ -7,6 +7,7 @@
 struct account {
   float balance;
   pthread_mutex_t lock;
+  pthread_cond_t cond;
 };
 
 struct thread_data {
@@ -22,16 +23,25 @@ void *Transfer(void *args){
   float amt = data->amount;
 
   for (int i = 0; i < 1000; i++) {
-    pthread_mutex_lock(&(fromAcct->lock));
-    pthread_mutex_lock(&(toAcct->lock));
+	  pthread_mutex_lock(&(fromAcct->lock));
+	  fromAcct->balance -= amt;
+          assert(fromAcct->balance >= 0);
+	  pthread_mutex_unlock(&(fromAcct->lock));
 
-    fromAcct->balance -= amt;
-    assert(fromAcct->balance >= 0);
+	  pthread_mutex_lock(&(toAcct->lock));
+	  toAcct->balance += amt;
+	  pthread_mutex_unlock(&(toAcct->lock));
 
-    toAcct->balance += amt;
+//        assert(fromAcct->balance >= 0);
+//      pthread_mutex_lock(&(fromAcct->lock));
+//      pthread_mutex_lock(&(toAcct->lock));
 
-    pthread_mutex_unlock(&(fromAcct->lock));
-    pthread_mutex_unlock(&(toAcct->lock));
+     // fromAcct->balance -= amt;
+     // assert(fromAcct->balance >= 0);
+
+     // toAcct->balance += amt;
+     // pthread_mutex_unlock(&(fromAcct->lock));
+     // pthread_mutex_unlock(&(toAcct->lock));
   }
 
   return NULL;
@@ -43,6 +53,9 @@ int main() {
   B.balance = 5000;
   pthread_mutex_init(&(A.lock), NULL);
   pthread_mutex_init(&(B.lock), NULL);
+
+  pthread_cond_init(&(A.cond), NULL);
+  pthread_cond_init(&(B.cond), NULL);
 
   printf("Starting balance A: %.2f\n", A.balance);
   printf("Starting balance B: %.2f\n", B.balance);
@@ -67,6 +80,9 @@ int main() {
   // Should be the same because we transfer the same amount between both
   printf("Ending balance A: %.2f\n", A.balance);
   printf("Ending balance B: %.2f\n", B.balance);
+  
+  pthread_cond_destroy(&(A.cond));
+  pthread_cond_destroy(&(B.cond));
 
   pthread_mutex_destroy(&A.lock);
   pthread_mutex_destroy(&B.lock);

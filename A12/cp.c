@@ -19,7 +19,7 @@ int produce_data() {
 	return rand() % 10;
 }
 
-void* produce_item(void* arg) {
+void* produce_item() {
 	int item;
 	while (1){
 		item = produce_data(); // populating item in producer array
